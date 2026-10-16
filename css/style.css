@@ -52,6 +52,7 @@ header {
 main {
 	padding: .5rem;
 	text-align: justify;
+	margin-block: 1rem;
 }
 .title-section {
 	font-size: 2rem;
@@ -76,4 +77,8 @@ main {
 	background-color: var(--color-4);
 	color: var(--color-1);
 	font-weight: bold;
+}
+.bloque-info {
+	margin-block: 1rem .5rem;
+	padding: .5rem;
 }
