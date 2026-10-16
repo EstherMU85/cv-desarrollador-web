@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+    --color-1: #f4e9cd;
+    --color-2: #9dbebb;
+    --color-3: #77aca2;
+    --color-4: #468189;
+    --color-5: #031926;
+    --titles: 'Montserrat';
+    --text: 'Noto Sans';
+
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+img{
+    display: block;
+    max-width: 100%;
+}
+
+body {
+	background-color: #9dbebb;
+	margin: auto;
+	padding: 0 .5rem;
+    font-family: var(--text);
+}
+h1, h2, h3, h4{
+    font-family: var(--titles);
+}
+
+/* Header para todas las páginas */
+header {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	background-color: var(--color-5);
+	color: var(--color-1);
+    width: 100%;
+}
+.banner {
+	width: 80%;
+	text-align: left;
+	padding: 0 .5rem;
+    font-family: var(--titles);
+}
+.nav-menu {
+	width: 15%;
+}
+
+/* Seccion de main */
+main {
+	padding: .5rem;
+	text-align: justify;
+}
+.title-section {
+	font-size: 2rem;
+	text-align: center;
+	border-block-end: 1px solid var(--color-4);
+	color: var(--color-4);
+}
+.pages {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	gap: .2rem;
+	justify-content: center;
+	margin: 1rem;
+}
+.pages > div {
+	width: 80%;
+	text-align: center;
+	padding: 1rem;
+	border-radius: .5rem;
+	border: 2px solid var(--color-4);
+	background-color: var(--color-4);
+	color: var(--color-1);
+	font-weight: bold;
+}
