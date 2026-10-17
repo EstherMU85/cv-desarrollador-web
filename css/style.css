@@ -73,7 +73,7 @@ main {
 	justify-content: center;
 	margin: 1rem;
 }
-.pages > div {
+.button-pages {
 	width: 80%;
 	text-align: center;
 	padding: 1rem;
