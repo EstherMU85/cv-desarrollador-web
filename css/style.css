@@ -87,3 +87,22 @@ main {
 	margin-block: 1rem .5rem;
 	padding: .5rem;
 }
+.equipos-tecnicas {
+	list-style: none;
+	background-color: var(--color-1);
+	padding: .5rem;
+	line-height: 2rem;
+	color: var(--color-4);
+	border-radius: .5rem;
+	text-align: center;
+}
+h4 {
+	background-color: var(--color-4);
+	color: var(--color-1);
+	border-radius: .5rem;
+	padding: .2rem;
+	text-align: center;
+}
+.art-section, #proyectos {
+	margin-block: 1rem;
+}
