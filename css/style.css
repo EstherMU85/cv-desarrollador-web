@@ -196,8 +196,6 @@ thead th{
 	color: var(--color-1);
 }
 
-
-
 @media (min-width: 550px){
 	/* Sección de cabecera */
 	.banner {
@@ -244,12 +242,14 @@ thead th{
 		padding: .5rem;
 	}
 }
+
 @media (min-width: 650px){
 	/* Sección de cabecera */
 	.item-menu{
 		width: 19%;
 	}
 }
+
 @media (min-width: 750px){
 	.lenguajes, .habilidades {
 		display: flex;
@@ -263,4 +263,56 @@ thead th{
 	.lenguajes .art-section, .habilidades .art-section{
 		width: 45%;
 	}
+}
+@media (min-width: 1200px){
+	.col-menu {
+		width: 1000px;
+		margin: auto;
+	}
+	main{
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+	}
+	/* Página de inicio */
+	.intro{
+		grid-column: 2 / span 10;
+	}
+
+	/* Página de carrera investigadora */
+	#laboral{
+		grid-column: 1 / span 6;
+	}
+	#tecnicas{
+		grid-column: 7 / span 12;
+	}
+	/* Página de formación académica */
+	#academicas{
+		grid-column: 1 / span 4;
+	}
+	#idiomas {
+		grid-column: 5 /span 4;
+	}
+	#otros_cursos {
+		grid-column: 9/span 12;
+	}
+	.title-section{
+		font-size: 1.5rem;
+	}
+	/* Página de diseño web */
+	#disenyo{
+		grid-column: 1 / span 4;
+	}
+	#lenguaje{
+		grid-column: 5 / span 12;
+		display: flex;
+		align-content: last baseline;
+	}
+	.lenguajes .title-section{
+		width: 100%;
+	}
+	#html, #css, #javascript{
+		width: 29%;
+	}
+	
+
 }
