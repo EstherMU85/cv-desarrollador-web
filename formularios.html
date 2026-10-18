@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de formulario de contacto con HTML y CSS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            display: block;
+            width: 100%;
+
+        }
+
+        .box_gris {
+            display: flex;
+            background-color: lightgray;
+            border: 1px solid grey;
+            border-radius: .5rem;
+            width: 1000px;
+            flex-wrap: wrap;
+            flex-direction: row;
+            gap: 0.5rem;
+            padding: .25rem;
+            justify-content: center;
+            height: 300px;
+            align-content: space-evenly;
+            margin: auto;
+            margin-block: .5rem;
+        }
+
+        .fila_box1 {
+            border: 1px solid white;
+            border-radius: .25rem;
+            width: 32.5%;
+            text-align: left;
+            padding: .5rem;
+            align-content: center;
+            height: 100px;
+        }
+
+        .fila_box2 {
+            border: 1px solid white;
+            border-radius: .25rem;
+            width: 49%;
+            text-align: left;
+            padding: .5rem;
+            align-content: flex-start;
+        }
+
+        .fila_box3 {
+            border: 1px solid white;
+            border-radius: .25rem;
+            width: 49%;
+            text-align: left;
+            padding: .5rem;
+            align-content: flex-start;
+            height: 200px;
+        }
+
+        .fila_box4 {
+            width: 1000px;
+            border: 1px solid grey;
+            border-radius: .25rem;
+            background-color: grey;
+            justify-content: space-evenly;
+            display: flex;
+            height: 44px;
+            margin: auto;
+            padding: .5rem;
+        }
+
+        small {
+            font-size: smaller;
+            color: white;
+        }
+
+        .input1 {
+            display: block;
+            margin: .5rem 0;
+        }
+
+        #estudio, #archivo {
+            margin: .5rem 0;
+            display: block;
+        }
+
+        #turno {
+            margin: .5rem 0;
+        }
+
+        #comentario {
+            width: 100%;
+            height: 150px;
+            display: block;
+            margin-top: .5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <h1>Formulario HTML 5</h1>
+        <section class="Formulario" id="formularioC">
+            <form action="#" method="get">
+                <fieldset class="box_gris datos_personales">
+                    <div class="fila_box1">
+                        <label for="nombre">Nombre</label>
+                        <input class="input1" type="text" name="nombre" id="nombre">
+                        <small>Tipo text</small>
+                    </div>
+                    <div class="fila_box1">
+                        <label for="email">E-mail </label>
+                        <input class="input1" type="text" name="email" id="email">
+                        <small>Tipo email y datalist asociado con 3 entradas</small>
+                    </div>
+                    <div class="fila_box1">
+                        <label for="contraseña">Contraseña</label>
+                        <input class="input1" type="password" name="contraseña" id="contraseña">
+                        <small>Tipo password</small>
+                    </div>
+                    <div class="fila_box1">
+                        <label for="telf">Teléfono </label>
+                        <input class="input1" type="text" name="telf" id="telf">
+                        <small>Tipo tel y asociado con 3 entradas</small>
+                    </div>
+                    <div class="fila_box1">
+                        <label for="nac">Fecha Nacimiento:</label>
+                        <input class="input1" type="date" name="nac" id="nac">
+                        <small>Tipo date </small>
+                    </div>
+                    <div class="fila_box1">
+                        <label for="h_semanales">Horas semanales de estudio</label>
+                        <input class="input1" type="range" name="h_semanales" id="h_semanales" min="0" max="60" step="5"
+                            value="30">
+                        <small>Tipo rango (de 0 a 60 con incrementos de 5)</small>
+                    </div>
+                </fieldset>
+                <fieldset class="box_gris">
+                    <div class="fila_box2">
+                        <label for="rango_edad">Selecciona rango de edad</label>
+                        <div>
+                            <input type="radio" name="rango_edad" id="rango_edad" value="1">
+                            <label for="rango_edad">Menos de 20 años</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="rango_edad" id="rango_edad" value="2">
+                            <label for="rango_edad">Entre 20 y 40 años</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="rango_edad" id="rango_edad" value="3">
+                            <label for="rango_edad">Más de 40 años</label>
+                        </div>
+                    </div>
+                    <div class="fila_box2">
+                        <label for="interes">Indica los temas de interés</label>
+                        <div><input type="checkbox" name="interes" id="interes" value="1">Tipografía</input></div>
+                        <div><input type="checkbox" name="interes" id="interes" value="2">Ilustración</input></div>
+                        <div><input type="checkbox" name="interes" id="interes" value="3">Fotografía</input></div>
+                    </div>
+                    <div class="fila_box2">
+                        <label for="estudios">Estudios realizados</label><br>
+                        <select name="estudios" id="estudio" multiple="multiple">
+                            <option value="1">Eso</option>
+                            <option value="2">Bachillerato</option>
+                            <option value="3">Grado Medio</option>
+                            <option value="4">Grado Superior</option>
+                            <option value="5">Diplomatura</option>
+                            <option value="6">Licenciatura</option>
+                            <option value="7">Máster</option>
+                            <option value="8">Doctorado</option>
+                        </select>
+                        <small>Selección múltiple. Valores: Educación Secundaria, Bachillerato, FP Medio, FP Superior,
+                            Diplomatura, Licenciatura,
+                            Máster, Doctorado</small>
+                    </div>
+                    <div class="fila_box2">
+                        <label for="turno">Selecciona un turno de clase: </label><br>
+                        <select name="turno" id="turno">
+                            <option value="1">Mañanas</option>
+                            <option value="2">Mediodía</option>
+                            <option value="3">Tardes</option>
+                            <option value="4">Noches</option>
+                            <option value="5">Indiferente</option>
+                        </select><br>
+                        <small>Selección única. Valores: Mañanas, Mediodía, Tardes, Noches, Indiferente</small>
+                    </div>
+                </fieldset>
+                <fieldset class="box_gris">
+                    <div class="fila_box3">
+                        <label for="comentario">Comentario:</label>
+                        <textarea name="comentario" id="comentario" placeholder="Aquí tu comentario"></textarea>
+                    </div>
+                    <div class="fila_box3">
+                        <label for="archivo">Selecciona un archivo</label>
+                        <input type="file" name="archivo" id="archivo">
+                        <small>Tipo file</small>
+                    </div>
+                </fieldset>
+                <fieldset class="fila_box4">
+                    <input type="submit">
+                    <input type="reset">
+                    <input type="button" value="Guardar">
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</body>
+
+</html>

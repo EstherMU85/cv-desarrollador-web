@@ -32,6 +32,12 @@ a {
 	text-decoration: none;
 	color: var(--color-1);
 	font-weight: bold;
+	display: block;
+	transition: all 1s ease;
+}
+a:hover{
+	color: var(--color-5);
+	background-color: var(--color-1);
 }
 
 /* Header para todas las páginas */
@@ -87,7 +93,7 @@ main {
 	margin-block: 1rem .5rem;
 	padding: .5rem;
 }
-.equipos-tecnicas {
+.equipos-tecnicas, .lenguajes-programacion {
 	list-style: none;
 	background-color: var(--color-1);
 	padding: .5rem;
@@ -105,4 +111,7 @@ h4 {
 }
 .art-section, #proyectos {
 	margin-block: 1rem;
+}
+.li-programacion {
+	color: var(--color-4);
 }
