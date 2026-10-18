@@ -195,6 +195,34 @@ thead th{
     border-bottom: 2px solid var(--color-5);
 	color: var(--color-1);
 }
+/* Footer */
+
+.rrss {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	background-color: var(--color-5);
+	padding: 1rem;
+	border-radius: .5rem;
+	justify-content: center;
+}
+.svg-inline--fa.fa-github,
+.svg-inline--fa.fa-linkedin, 
+.svg-inline--fa.fa-orcid,
+.svg-inline--fa.fa-researchgate {
+	color: var(--color-1);
+	font-size: 2rem;
+	margin: .5rem;
+	transition: all .5s ease;
+}
+.svg-inline--fa.fa-github:hover,
+.svg-inline--fa.fa-linkedin:hover,
+.svg-inline--fa.fa-orcid:hover,
+.svg-inline--fa.fa-researchgate:hover{
+	color: var(--color-4);
+	transform: scale(1.2);
+}
+
 
 @media (min-width: 550px){
 	/* Sección de cabecera */
@@ -264,7 +292,7 @@ thead th{
 		width: 45%;
 	}
 }
-@media (min-width: 1200px){
+@media (min-width: 1000px){
 	.col-menu {
 		width: 1000px;
 		margin: auto;
@@ -314,6 +342,4 @@ thead th{
 	#html, #css, #javascript{
 		width: 29%;
 	}
-	
-
 }
