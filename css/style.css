@@ -138,16 +138,7 @@ main {
 	justify-content: center;
 	margin: 1rem;
 }
-.button-pages {
-	width: 80%;
-	text-align: center;
-	padding: 1rem;
-	border-radius: .5rem;
-	border: 2px solid var(--color-4);
-	background-color: var(--color-4);
-	color: var(--color-1);
-	font-weight: bold;
-}
+
 .bloque-info {
 	margin-block: 1rem .5rem;
 	padding: .5rem;
@@ -159,6 +150,7 @@ main {
 	justify-content: space-evenly;
 	padding-top: 1rem;
 }
+
 .equipos-tecnicas, .lenguajes-programacion {
 	list-style: none;
 	background-color: var(--color-1);
@@ -178,10 +170,15 @@ h4 {
 .art-section, #proyectos {
 	margin-block: 1rem;
 }
+ #proyectos {
+	padding: 0 1rem;
+}
 .li-programacion {
 	color: var(--color-4);
 }
+
 @media (min-width: 550px){
+	/* Sección de cabecera */
 	.banner {
 		width: 100%;
 		text-align: center;
@@ -211,11 +208,38 @@ h4 {
 		text-align: center;
 		line-height: 1rem;
 	}
+	/* Sección de main */
     main {
     	position: relative;
     	top: 0px;
     }
+	.p-info {
+		line-height: 2rem;
+		padding: .5rem;
+	}
+	#titulos-acad {
+		list-style: none;
+		line-height: 2rem;
+		padding: .5rem;
+	}
+}
+@media (min-width: 650px){
+	/* Sección de cabecera */
+	.item-menu{
+		width: 19%;
+	}
 }
 @media (min-width: 750px){
-	
+	.lenguajes, .habilidades {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-evenly;
+	}
+	.lenguajes > .title-section {
+	width: 100%;
+	}
+	.lenguajes .art-section, .habilidades .art-section{
+		width: 45%;
+	}
 }

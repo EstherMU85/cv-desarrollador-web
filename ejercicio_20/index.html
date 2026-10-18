@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio responsive</title>
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *img {
+            max-width: 100;
+            height: auto;
+        }
+
+        html {
+            font-size: 20px;
+        }
+        /* esto es para el menu hamburguesa */
+        .menu-icon{
+            color: blueviolet;
+            font-size: 2.5rem;
+            font-weight: bold;
+            padding: 0 .3rem;
+        }
+        #menu-burguer{
+            display: none;
+        }
+        .col-menu {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 1rem;
+            margin: 1.5rem 0 0;
+            position: relative;
+        }
+       .nav-menu {
+	        background-color: blue;
+	        border-radius: .25rem;
+	        color: blueviolet;
+	        font-weight: bold;
+	        position: relative;
+	        top: -10px;
+	        left: 0;
+            display: none;
+            /*  le ponemos display:none para que al rpinciupio nol se muestre */
+        }
+        li {
+	        list-style: none;
+        }
+       .item-menu {
+	        display: block;
+	        text-decoration: none;
+	        color: blueviolet;
+	        border: 1px solid;
+            border-radius: .25rem;
+	        padding: 0.2rem;
+	        text-align: left;
+	        margin: .2rem;
+	        background-color: lightgray;
+	        width: 460px;
+        }
+        #menu-burguer:checked + .nav-menu {
+        	height: auto;
+        	padding: .2rem 0;
+        	display: block;
+            /*  le ponemos display:block para que al marcar el checked se muestre */
+        }
+        main {
+        	position: relative;
+        	top: 0px;
+        }
+        @media (min-width: 768px) {
+            .menu-icon {
+                display: none;
+            }
+            .nav-menu{
+                height: auto;
+                width: 100%;
+                padding: .5rem;
+                position: initial;
+                display: block;
+                /* display:block para que este en pantalla todo el tiempo */
+            } 
+            .content-menu {
+            	display: flex;
+            	flex-direction: row;
+            	justify-content: center;
+            	width: 800px;
+            	gap: 1rem;
+            }
+            .item-menu {
+            	text-align: center;
+            	width: 110px;
+            }
+            main {
+            	position: relative;
+            	top: 0px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <h1>Ejemplo de menú móvil-escritorio</h1>
+            <div class="col-menu">
+                <label for="menu-burguer" class="menu-icon">&#9776;</label>
+                <input type="checkbox" name="menu-burguer" id="menu-burguer">
+                <nav class="nav-menu">
+                    <ul class="content-menu">
+                        <li><a href="#" class="item-menu">Nosotros</a></li>
+                        <li><a href="#" class="item-menu">Inicio</a></li>
+                        <li><a href="#" class="item-menu">Contactos</a></li>
+                        <li><a href="#" class="item-menu">Productos</a></li>
+                        <li><a href="#" class="item-menu">Servicios</a></li>
+                    </ul>
+                </nav>
+            </div >
+        </header>
+    </div>
+    <main>
+        <h2>Resto del documento</h2>
+    </main>
+    
+</body>
+</html>
