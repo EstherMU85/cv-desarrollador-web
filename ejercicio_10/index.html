@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 10: Diseño en columnas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            margin: auto;
+            width: 1200px;
+        }
+
+        /*  Encabezado */
+        header {
+            background-color: yellow;
+            text-align: center;
+            margin: auto;
+            width: 100%;
+            padding: 1rem;
+        }
+
+        h1 {
+            color: blue;
+            font-size: 3rem;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* Estilo para el aside izquierdo */
+        .izq {
+            background-color: lightblue;
+            width: 20%;
+            padding: .5rem;
+            position: relative;
+            top: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            height: 425px;
+        }
+
+        .izq>h2 {
+            font-family: arial;
+            color: darkred;
+            padding-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .apartado {
+            background-color: white;
+            margin: .8rem 0;
+            font-family: arial;
+            width: 225px;
+            height: 86px;
+        }
+
+        /* Esto es para los apartados de la izquierda */
+        .apartado>h3 {
+            color: darkred;
+            padding: .25rem;
+            margin: 3px;
+        }
+
+        .apartado>p {
+            padding: 0 10px;
+            font-size: small;
+            text-align: justify;
+        }
+
+        /* Estilo para el main */
+        main {
+            width: 58%;
+            height: 430px;
+            margin: 0 1%;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            top: 10px;
+            position: relative;
+            height: 425px;
+        }
+
+        img {
+            height: 50%;
+        }
+
+        .central {
+            padding: .25rem;
+            text-align: center;
+            background-color: lightblue;
+            height: 50%;
+        }
+
+        .central>h2 {
+            padding: .75rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .central>p {
+            padding: .75rem;
+            font-family: arial;
+            font-size: small;
+            text-align: justify;
+        }
+
+        /* Estilo para el aside derecho */
+        .drcha {
+            background-color: blue;
+            width: 20%;
+            padding: .5rem;
+            position: relative;
+            top: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            height: 425px;
+        }
+
+        .drcha>h2 {
+            font-family: arial;
+            color: white;
+            padding-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        /*  Esto para las noticias */
+        .noticia {
+            background-color: white;
+            margin: .8rem 0;
+            font-family: arial;
+            width: 225px;
+            height: 86px;
+        }
+
+
+        .noticia>h3 {
+            color: blue;
+            padding: .25rem;
+            margin: 3px;
+        }
+
+        .noticia>p {
+            padding: 0 10px;
+            font-size: small;
+            text-align: justify;
+        }
+
+        /*  Esto para le divisor y el footer */
+        .divisor {
+            background-color: blue;
+            width: 100%;
+            position: relative;
+            border: 1px solid blue;
+            height: 10px;
+            top: 16px;
+        }
+
+        footer {
+            position: relative;
+            top: 26px;
+            left: 40%;
+            text-align: center;
+            font-style: italic;
+            font-size: small;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <header>
+            <h1>En la cabecera del sitio Web usamos un <code>&lt;hI&gt;</code></h1>
+        </header>
+        <aside class="izq">
+            <h2>BLOQUE LATERAL CON <code>&LT;H2&GT;</code></h2>
+            <article class="apartado" id="apart_1">
+                <h3>Apartado 1</h3>
+                <p>Entradilla para le apartado 1, con un par de líneas de texto.</p>
+            </article>
+            <article class="apartado" id="apart_2">
+                <h3>Apartado 2</h3>
+                <p>Entradilla para el apartado 2, con un par de líneas de texto.</p>
+            </article>
+            <article class="apartado" id="apart_3">
+                <h3>Apartado I</h3>
+                <p>Entradilla para el apartado 3, con un par de líneas de texto.</p>
+            </article>
+        </aside>
+        <main>
+            <img src="img/principal.jpg" alt="Imagen muy zen de tres piedras apiladas sobre fondo naranja atardecer">
+            <article class="central">
+                <h2>Este es el título del apartado central. Es una etiqueta h2</h2>
+                <p>El párrafo de muestra, son varias líneas copiadas y pegadas sin ningún sentido. El párrafo de
+                    muestra, son varias líneas copiadas y pegadas sin ningún sentido. El párrafo de muestra, son varias
+                    líneas copiadas y pegadas sin ningún sentido. El párrafo de muestra, son varias líneas copiadas y
+                    pegadas sin ningún sentido. </p>
+                <p>El párrafo de muestra, son varias líneas copiadas y pegadas sin ningún sentido. El párrafo de
+                    muestra, son varias líneas copiadas y pegadas sin ningún sentido. El párrafo de muestra, son varias
+                    líneas copiadas y pegadas sin ningún sentido. El párrafo de muestra, son varias líneas copiadas y
+                    pegadas sin ningún sentido. </p>
+            </article>
+        </main>
+        <aside class="drcha">
+            <h2>BLOQUE NOTICIAS</h2>
+            <article class="noticia" id="not_1">
+                <h3>NOTICIA 1</h3>
+                <p>Entradilla para la noticia 1, con un par de líneas de texto.</p>
+            </article>
+            <article class="noticia" id="not_2">
+                <h3>NOTICIA 2</h3>
+                <p>Entradilla para la noticia 2, con un par de líneas de texto.</p>
+            </article>
+            <article class="noticia" id="not_3">
+                <h3>NOTICIA 3</h3>
+                <p>Entradilla para la noticia 3, con un par de líneas de texto.</p>
+            </article>
+        </aside>
+        <div class="divisor"></div>
+        <footer>
+            <p>Dirección: calle, código postal y población</p>
+            <p>Email: micorreo@dominio.com</p>
+            <p>teléfono: 123 456 789</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>
