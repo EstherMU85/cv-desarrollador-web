@@ -282,9 +282,10 @@ thead th{
 	#laboral{
 		grid-column: 1 / span 6;
 	}
-	#tecnicas{
-		grid-column: 7 / span 12;
-	}
+	#tecnicas {
+	grid-column: 7 / span 12;
+	align-content: last baseline;
+}
 	/* Página de formación académica */
 	#academicas{
 		grid-column: 1 / span 4;
