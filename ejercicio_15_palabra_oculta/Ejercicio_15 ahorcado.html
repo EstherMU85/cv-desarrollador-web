@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Ahorcado</title>
+    <style>
+        body {
+            font-family: verdana;
+            color: darkslategray;
+        }
+        h1 {
+            font-size: 4rem;
+            text-align: center;
+        }
+        #intro {
+            text-align: center;
+            font-size: 2rem;
+            border: 6px solid darkslategray;
+            padding: 1rem;
+            border-radius: 1rem;
+            color: slategrey;
+            background-color: lightsteelblue;
+        }
+        #intro button {
+            font-size: 3rem;
+            font-weight: bold;
+            padding: .5rem;
+            background-color: lightslategrey;
+            border-radius: .5rem;
+            color: lightsteelblue;
+            border: 2px solid darkslategray;
+        }
+        #usuario {
+            height: 30px;
+            width: 250px;
+            margin: 0 2rem;
+            font-size: 2.2rem;
+            padding: 0.4rem;
+            color: slategray;
+            border: 2px solid;
+            border-radius: .3rem;
+            text-align: center;
+        }
+        .contenedor {
+            width: 960px;
+            margin: auto;
+        }
+        #casillero {
+            letter-spacing: .2rem;
+            font-size: 2rem;
+        }
+        #letra {
+            width: 40px;
+            height: 30px;
+            font-size: 1.8rem;
+            text-align: center;
+            color: darkslategray;
+            font-weight: bold;
+            border-radius: .4rem;
+        }
+       #entrada button, #frases, #selector button {
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: .3rem;
+            border-radius: .3rem;
+            border: navajowhite;
+            background-color: lightslategray;
+            color: white;
+            position: relative;
+            top: -5px;
+        }
+  
+        #selector {
+            display: none;
+            font-size: 2rem;
+        }
+        #entrada {
+            display: none;
+        }
+        #mensajes {
+            display: none;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border: 3px solid;
+            border-radius: 1rem;
+            margin: 5rem;
+        }
+        #alertas {
+        	border: 6px solid;
+        	margin: 4rem auto;
+        	width: 600px;
+        	border-radius: 1rem;
+        	padding: .5rem 1rem;
+            text-align: center;
+            transition: all ease-in-out 1s;
+        }
+        .info{
+            color: darkblue;
+            background-color: lightblue;
+        }
+        .error{
+            color: darkred;
+            background-color: lightcoral;
+        }
+        .warning{
+            color: maroon;
+            background-color: darkorange;
+        }
+        .success{
+            color: darkgreen;
+            background-color: lightgreen;
+        }
+
+    </style>
+</head>
+<body>
+<div class="contenedor">
+        <h1>Jugar al ahorcado</h1>
+        <div id="alertas" class="success">
+            <h4>Juego de la frase oculta o del "ahoracado"</h4>
+            <p>Escribe tu nombre para empezar</p>
+        </div>
+        <div id="intro">
+            <label for="in_usuario">Nombre:</label>
+            <input id="in_usuario" type="text">
+            <button id="btn_inicio">Vaaamoooos!</button>
+        </div>
+        <div id="selector">
+           <label for="in_frase">Dime tu frase oculta</label>
+           <input type="text" size="120" id="in_frase">
+            <button id="btn_frase">Empezar!</button>
+        </div>
+       <div id="entrada">
+            <input type="text" id="in_letra" maxlength="1" size="1">
+            <button id="btn_letra">Comprobar</button>
+       </div>
+        <div id="casillero"></div>
+        <div id="mensajes">
+            <p>Número de letras totales: <span id="out_letras"></span>. Quedan: <span id="out_restantes"></span></p>
+            <p>Letras falladas: <span id="out_error"></span>. Intentos restantes: <span id="out_intentos"></span></p>
+            <p>Letras encontradas: <span id="out_aciertos"></span></p>
+        </div>
+        <dialog id="restart">
+            <p>¿Quieres volver a jugar?</p>
+            <button id="btn_play_again">Jugar de nuevo</button>
+            <button id="btn_end">Salir del juego</button>
+        </dialog>
+
+</div>
+<script>
+    //Constantes del DOM: hace referencia a todos los elementos del DOM con los que vamos a trabajar
+    //Inputs
+    const IN_USER = document.getElementById('in_usuario');
+    const IN_HIDDEN = document.getElementById('in_frase');
+    const IN_CHAR = document.getElementById('in_letra');
+    const RESTART = document.getElementById('restart');
+    //Botones
+    const BTN_START = document.getElementById('btn_inicio');
+    const BTN_HIDDEN = document.getElementById('btn_frase');
+    const BTN_CHAR = document.getElementById('btn_letra');
+    const BTN_REPLAY = document.getElementById('btn_play_again');
+    const BTN_END = document.getElementById('btn_end');
+    //Outputs
+    const CASILLERO = document.getElementById('casillero');
+    const OUT_CHARS = document.getElementById('out_letras');
+    const OUT_LEFT = document.getElementById('out_restantes');
+    const OUT_ERROR = document.getElementById('out_error');
+    const OUT_TRIES = document.getElementById('out_intentos');
+    const OUT_FOUND = document.getElementById('out_aciertos');
+    const OUT_ALERT = document.getElementById('alertas');
+    //Datos de la aplicación: a algunas les daremos valores iniciales y a otras les llegará ese valor según los inputs
+    let usuario, hidden_text, clean_text, found_chars, fail_chars, total_chars, found_number, fail_number, isGameOver, guesses;
+    const total_errors = 6;
+    //Elementos no disponibles en el texto
+    const forbidden_chars = '!\".$%&/()=*\`^\'\\:;,ºª|@#¬¿¡?1234567890';
+
+    //Desarrollo del juego: de manera secuencial conforme se aplica use la aplicación
+    //1 VALIDACIÓN DEL USUARIO//
+    function userLog(){
+        user = IN_USER.value;
+        if (!user || user.length < 3){
+            showAlert('Error de usuario', 'El nombre necesita 3 o más caracteres', 'warning');
+            setFocus(IN_USER);
+            return;
+        } 
+        //comprobar que no haya forbidden_char y si no está en prohibidos emepezamos el juego
+        if (isWordValid(user)){
+            startGame();
+        } else {
+            showAlert('Error de usuario', 'El nombre no puede tener caracteres especiales ni números', 'warning');
+            setFocus(IN_USER);
+        }
+    }
+    //2 INICIAMOS EL JUEGO//
+    function startGame(){
+        //establecer variables iniciales
+        hidden_text = '';
+        clean_text = '';
+        found_chars = '';
+        fail_chars = ''; 
+        total_chars = found_number = fail_number = guesses = 0; 
+        isGameOver = false;
+        //DOM
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('selector').style.display = 'block';
+        //Mensaje de bienvenida
+        showAlert('Bienvenid@, ' + user, 'Introduce la frase que quieras que adivine tu compañer@', 'info');
+    }
+    //3 COMPROBAMOS LA FRASE OCULTA//
+    function getHiddenText(){
+        hidden_text = IN_HIDDEN.value;
+        if (!hidden_text ||hidden_text.length < 3){
+            showAlert('Texto no válido', 'La frase a ocultar debe tener debe tener 10 caarcteres como mínimo', 'warning');
+            setFocus(IN_HIDDEN);
+            return;
+        }
+        if (!isWordValid(hidden_text)){
+            showAlert('Texto no válido', 'La frase a ocultar no puede tener caracteres especiales ni números ', 'warning');
+            setFocus(IN_HIDDEN);
+            return;
+        }
+        //como la palabra a pasado el filtro ya sabemos cuan larga es la palabra
+        total_chars = hidden_text.length;
+        //llamar a limpiar el texto
+        clean_text = cleanText(hidden_text);
+        //preparamos el casillero
+        setWrapper(hidden_text);
+    }
+    //4 PREPARAMOS EL CASILLERO//
+    function setWrapper(hidden_text){
+        //Creamos un bucle para que nos diga cuantas letras haí y cree un span para cada letra de la palabra
+        for (let i = 0; i < hidden_text.length; i++) {
+            const char = hidden_text[i];
+            const span = document.createElement('span');
+            //le decimos si lo que tiene que hacer es un guión o un punto
+            if (char === ' ') {
+                span.textContent = '.';
+                //si hay un espacio el número de letras totales ha de disminuir
+                total_chars--;
+            } else {
+                span.textContent = '-';
+            }
+            CASILLERO.append(span);   
+        }
+        //ajustes DOM
+        document.getElementById('selector').style.display = 'none';
+        document.getElementById('entrada').style.display = 'block';
+        document.getElementById('mensajes').style.display = 'block';
+        //llamada a la función de actualizar el panel
+        updatePanel();
+        //mensaje de bienvenida
+        showAlert('Empieza el juego', `Compañer@ de ${user}, es tu turno`, 'info');
+    }
+    //5 ACTUALIZAR EL PANEL//
+    function updatePanel(){
+        OUT_CHARS.textContent = total_chars;
+        OUT_ERROR.textContent = fail_chars;
+        OUT_FOUND.textContent = found_number;
+        OUT_LEFT.textContent = total_chars - found_number;
+        OUT_TRIES.textContent = total_errors - fail_number;
+    }
+    //6 COMPROBAMOS QUE LA LETRA SE PUEDE USAR//
+    //Esta es la función central del juego. Va acomprobar si ah termiando el juego, si la letra se puede usar o no, si ya está usada o no, si es erróena o si está
+    function checkLetter(){
+        //lo pirmero es ver si el juego a terminado o no, es decir si la boolena isGameOver = true o no.
+        if (isGameOver){
+            return;
+        }
+        let letter = IN_CHAR.value;
+        if (letter.length !== 1 || !isCharValid(letter) || letter === ' '){
+            setFocus(IN_CHAR);
+            showAlert('Error en la lerta introducida', 'No puedes dejar le cuadro en blanco ni introducir más de una letra o un caracter especial', 'warning');
+            return;
+        } 
+        letter = cleanVowel(letter);
+        //Comprobamos si la letra está o no
+        if (isLetterUsed(letter)){
+            showAlert('Cuidado', 'Esta letra ya la has usado en el juego', 'warning');
+            setFocus(IN_CHAR);
+            return;
+        }
+        if (clean_text.indexOf(letter) !== -1){
+            manageSuccess(letter);
+        } else {
+            manageError(letter);
+        }
+        //recuperar el foco en el input y que se quede vacío después de ponerle una letra
+        setFocus(IN_CHAR);
+        //ponemos una variable que sume cada vez que hacemos un intneto
+        guesses++;
+    }
+
+    //7 COMPROBAMOS QUE LA LETRA NO HA SIDO YA UTILIZADA//
+    function isLetterUsed(letter){
+        let isLetterUsed = false;
+         if(fail_chars.indexOf(letter) !== -1 || found_chars.indexOf(letter) !== -1){
+            isLetterUsed = true;
+         }
+         return isLetterUsed;
+    }
+    //8 FUNCIONES DE ACIERTO Y ERROR//
+    function manageSuccess(letter){
+        let appearances = 0;
+        found_chars += letter;
+        for (let i= 0; i  < clean_text.length; i++) {
+            const clean_letter = clean_text[i];
+            if (clean_letter === letter){
+                found_number++;
+                appearances++;
+                CASILLERO.children[i].textContent = hidden_text[i];
+            } 
+        }
+        //mostramos los datos actualizados y mostramos mensaje de acierto
+        updatePanel();
+        showAlert('¡Acierto!', `La letra ${letter} se encuentra en la frase ${appearances} veces`, 'success');
+        //comprobamos estado del juego según el númeor de letras encontradas
+        if (found_number == total_chars){
+            setFinalState('Winner');
+        }
+    }
+
+    function manageError(letter){
+        fail_chars += letter;
+        fail_number++;
+        updatePanel();
+        showAlert('¡Error!', `La letra ${letter} no se encuentra en la frase oculta`, 'error');
+        //Aviso para cuando qqueda un solo intento
+        if (fail_number === (total_errors - 1)){
+            setTimeout( function (){
+                showAlert('Atención', 'Sólo te queda un intento para encontrar la frase oculta', 'warning');
+            }, 1000);
+        }
+        //Comprobamos estado del juego según el número de intentos que nos quedan
+        if (fail_number == total_errors){
+            setFinalState('Looser');
+        }
+    }
+
+    //9 FUNCION PARA EL ESTADO DEL JUEGO //
+    function setFinalState(estado){
+        isGameOver = true;
+        if(estado === 'winner'){
+            showAlert('¡Enhorabuena!, compi', `Has encontrado la frase oculta en ${guesses} intentos`, 'succes');
+        } else {
+            showAlert('¡Lo sentimos!, compi', `No has encontrado la frase oculta y has tenido ${guesses} ocasiones para hacerlo`, 'error');
+        }
+        /*con setTimeout le decimos el tiempo que tiene que tardar en salir (en milisegundos) y luego la función de showmodal para que sea un pop up
+        setTimeout(function(){
+            RESTART.showmodal();
+        }, 1000);*/
+        setTimeout(showStartAgain, 1000);
+    }
+    //10 FUNCIÓN PREGUNTA POP UP DE REINICIO DEL JUEGO//
+    function showStartAgain(){
+        RESTART.showmodal();
+    }
+    //11 FUNCIÓN DE REINICIO DEL JUEGO//
+    function restarGame(){
+        //ocultar modal
+        RESTART.close();
+        //ocultar paneles de juego y volver al inicial
+        document.getElementById('entrada').style.display = 'none';
+        //resetear los valores
+        startGame();
+        //Vaciar el casillero
+        CASILLERO.innerHTML = '';
+        //Actualizar panel
+        updatePanel();
+        //mostrar mensaje de reinicio
+        showAlert('Juego reiniciado', `${user}, escribe una nueva frase oculta`, 'info');
+        //Colocar foco en el input de la frase
+        setFocus(IN_HIDDEN);
+    }
+    //12 FUNCIÓN PARA ACABAR EL JUEGO//
+    function endGame(){
+        //Vaciar body
+        document.body.innerHTML = '';
+        //Cerrar pestaña
+        //window.close();
+    }
+
+    //FUNCIONES AUXILIARES//
+    //creamos una función auxiliar para ver si un caracter está en la lista de prohibidos. Se usa para las funciones: userLog, checkLetter
+    function isCharValid(char){
+        let isCharValid = false;
+        if (forbidden_chars.indexOf(char) === -1){
+            isCharValid = true;
+        }
+        return isCharValid;
+    }
+    //Función para comporbar que cada letra de la palabra es válida o no. Damos por supuesto que la palabra es válida. Se usa para las funciones: userLog
+    function isWordValid(word){
+        let isWordValid = true;
+        for (let i = 0; i < word.length; i++) {
+            console.log(word);
+            if (!isCharValid(word[i])){
+                isWordValid = false;
+            }
+        }
+        return isWordValid;
+    }
+    //Función para reemplazar tildes y pasar a minúsculas. Se usa en las funciones: cleanText, checkLetter
+    function cleanVowel(vowel){
+        vowel = vowel.toLowerCase();
+        let clean_vowel = '';
+        switch (vowel) {
+                case 'á':
+                case 'à':
+                case 'ä':
+                case 'â':
+                    clean_vowel = 'a';
+                    break;
+                case 'é':
+                case 'è':
+                case 'ë':
+                case 'ê':
+                    clean_vowel = 'e';
+                    break;
+                case 'í':
+                case 'ì':
+                case 'ï':
+                case 'î':
+                    clean_vowel = 'i';
+                    break;
+                case 'ó':
+                case 'ò':
+                case 'ö':
+                case 'ô':
+                    clean_vowel = 'o';
+                    break;
+                case 'ú':
+                case 'ù':
+                case 'ü':
+                case 'û':
+                    clean_vowel = 'u';
+                    break;
+
+                default:
+                    clean_vowel = vowel;
+                    break;
+            }
+            return clean_vowel;
+        }
+
+        
+    //Función para limpiar las palabras de tildes y pasar a minúsculas. Se usa en las funciones: getHiddenText
+    function cleanText(text){
+        let new_text = '';
+        for (let i = 0; i < text.length; i++) {
+            const vowel = text[i].toLowerCase();
+            new_text += cleanVowel(vowel);
+        }
+        return new_text;
+    }
+    // Función para vaciar los inputs y poner el cursor de manera automática. Se usa en las funciones: checkLetter, userLog, getHiddenText
+    function setFocus(element){
+        element.value = '';
+        element.focus();
+    }
+    //Función para mostrar mensajes. Se usa en las funciones: userLog, grtHiddenText, checkLetter, startGame, setWrapper
+    function showAlert(title, message, format){
+        OUT_ALERT.style.display = 'block';
+        //OUT_ALERT.children[0].textContent = title;
+        OUT_ALERT.querySelector('h4').textContent = title;
+        OUT_ALERT.querySelector('p').textContent = message;
+        OUT_ALERT.className = format;
+    }
+    /*Función para ocultar el mensaje.
+    function hideAlert(){
+        //OUT_ALERT.style.display = 'none';
+    }*/
+
+//EVENTOS
+BTN_START.onclick = userLog;
+BTN_HIDDEN.onclick = getHiddenText;
+BTN_CHAR.onclick = checkLetter;
+BTN_REPLAY.onclick = restarGame;
+BTN_END.onclick = endGame;
+//IN_USER.oninput = hideAlert;
+//IN_HIDDEN.oninput = hideAlert;
+    
+
+
+</script>
+
+</body>
+</html>

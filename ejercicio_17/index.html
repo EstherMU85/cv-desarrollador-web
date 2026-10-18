@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 17</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Londrina+Sketch&family=Rock+Salt&display=swap');
+
+        :root {
+            --titulo: 'Rock Salt';
+            --subtitulos: 'Londrina Sketch';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .contenedor {
+            background-color: #8fd326;
+            width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            font-family: var(--titulo);
+            font-size: 2rem;
+            text-shadow: 2px 2px 2px darkmagenta;
+            color: deeppink;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        h1:hover {
+            text-shadow: 3px 3px 6px darkmagenta;
+        }
+
+        h3 {
+            font-family: var(--subtitulos);
+            color: lightgreen;
+            text-shadow: -1px -1px 2px white, 1px 1px 2px black;
+            position: absolute;
+            /* top: 50%; */
+        }
+
+        .izq {
+            top: 33%;
+            left: 101%;
+            width: 100%;
+            text-align: center;
+            font-size: 5rem;
+            transition: all 1s 0.5s;
+        }
+
+        .tumbao {
+        	top: 74%;
+            left: 75%;
+        	width: 100%;
+        	text-align: center;
+        	font-size: 3rem;
+        	transition: all .5s 1s;
+        }
+
+        .discos {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            gap: 3rem;
+            justify-content: space-between;
+        }
+
+        .caja {
+            width: 400px;
+            height: auto;
+            border: 2px solid green;
+            overflow: hidden;
+            /* esto es para ocultar los elemntos que salen */
+            position: relative;
+        }
+
+        .caratula {
+            width: 60%;
+            display: block;
+            margin-left: 20%;
+        }
+
+        /* Animacion primera fila */
+        .hover1 {
+            position: absolute;
+            background-color: rgba(0, 128, 0, .5);
+            top: 100%;
+            width: 100%;
+            height: 100%;
+            transition: all 1s;
+        }
+        /* posicion de inicio de la cortinilla */
+
+        .fila-1:hover .hover1 {
+            top: 0;
+        }
+        /* le decimos a la cortinilla que vaya a esta posicion. Antes le hemos dicho desde donde empieza */
+
+        .fila-1:hover .izq {
+            left: 0;
+        }
+        /* Animacion para el h3 */
+
+        /* Animacion segunda fila */
+        /* Animacion para que la caratula se vaya al lado */
+        .desplazado {
+            transition: all .5s;
+        }
+        .fila-2:hover .desplazado {
+            margin-left: 0;
+        }
+        /* Para decirle a la cortinilla donde tiene que ir */
+        .hover2 {
+            position: absolute;
+            background-color: rgba(0, 128, 0, .5);
+            right: 0;
+            height: 100%;
+            width: 40%;
+            top: 100%;
+            transition: all .5s .5s;
+        }
+        .fila-2:hover .hover2{
+            top: 0;
+        }
+        /* Animacion para decirle al texto donde tiene que ir */
+        .fila-2:hover .tumbao {
+        	rotate: -90deg;
+        	top: 40%;
+        	left: 33.333%;
+            /* es importante decirle aqui donde acaba y donde le damops el formato decirle donde empieza */
+        }
+        </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <h1>1997. El año del punk rock</h1>
+        <section class="discos">
+            <article class="caja fila-1">
+                <img src="imgs/nevermind-pistols.jpg" alt="caratula de disco1" class="caratula">
+                <div class="animacion hover1"></div>
+                <h3 class="izq">Sex Pistols</h3>
+
+            </article>
+            <article class=" caja fila-1">
+                <img src="imgs/ramones-rocket.jpg" alt="caratula disco 2" class="caratula">
+                <div class="animacion hover1"></div>
+                <h3 class="izq">Rocket</h3>
+
+            </article>
+            <article class="caja fila-2">
+                <img src="imgs/theclash.jpg" alt="caratula disco 3" class="caratula desplazado">
+                <div class="animacion hover2"></div>
+                <h3 class="tumbao">The clash</h3>
+
+            </article>
+            <article class="caja fila-2">
+                <img src="imgs/thejam-city.jpg" alt="caratula disco 4" class="caratula desplazado">
+                <div class="animacion hover2"></div>
+                <h3 class="tumbao">The Jam</h3>
+
+            </article>
+
+        </section>
+
+    </div>
+
+</body>
+
+</html>

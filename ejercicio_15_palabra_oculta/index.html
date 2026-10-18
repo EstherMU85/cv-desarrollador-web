@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frase oculta</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="pag_inicio">
+            <h1>Juego del ahorcado</h1>
+            <div class="usuario">
+                <label for="in_usuario">Hola jugador, dinos cual es tu nombre:</label>
+                <input type="text" name="in_usuario" id="in_usuario">
+            </div>
+            <button id="btn_inicio">¡Empieza el juego!</button>
+        </div>
+        <main class="principal">
+            <div class="interfaz" id="frase_oculta">
+                <h2>¡Bienvenido!</h2>
+                <p>Introduce una frase para empezar el juego:</p>
+                <input type="text" name="in_frase" id="in_frase" size="20">
+                <button id="btn_ocultar">Oculta la frase</button>
+            </div>
+            <div class="interfaz" id="caracter">
+                <label for="in_char">Prueba tu suerte. Introduce una letra para comporbar si está en la palabra oculta:</label>
+                <input type="text" name="in_char" id="in_char" size="3">
+                <button id="btn_ck_char">Comprobar</button>
+            </div>
+            <div class="interfaz" id="casillero">
+
+            </div>
+            <div class="interfaz" id="panel_control">
+                <p class="estado_juego">Nº de letras a encontrar: <span id="total">0</span></p>
+                <p class="estado_juego">Nº de letras encontradas: <span id="char_found"></span></p>
+                <p class="estado_juego">Nº de letras falladas: <span id="char_falladas"></span></p>
+                <p class="estado_juego">Lista de letras falladas: <span id="char_fail"></span></p>
+                <p class="estado_juego">Nº de intentos: <span id="trial"></span></p>
+            </div>
+            <div class="interfaz" id="aviso">
+                
+            </div>
+        </main>
+    </div>
+    <script>
+    //VARIABLES GLOBALES
+    const USER = document.getElementById('in_usuario');
+    const START = document.querySelector('.pag_inicio');
+    const HIDDEN_WORD = document.getElementById('in_frase');
+    const GUESS_WORD = document.getElementById('casillero');
+    const IN_LETTER = document.getElementById('in_char');
+    const TRIES = 6;
+    //lo que hay a continuación del \ no lo cuenta. Para las comillas
+    const FORBIDDEN_LETTERS = "ºª\\!|@·#$%&¬/()=?¡¿\"\'"
+    let letters_found;
+    let fail_letters; 
+    let total_letters;
+    let tries;
+    let game_over = false;
+    let user;
+    let colec_span;
+    let IN_WORD = '';
+    let clean_word;
+
+
+    //FUNCIONES
+    //1º Hacemos una función para poder poner el nombre de usuario: no puede estar vacío, tener menos de 3 caracteres, empezar por un número o tener un caracter prohibido
+    function nameUser(){
+        user = USER.value;
+        let first_letter = user[0];
+        if (user == ''){
+            alert('¡No puedes continuar sin poner un nombre!');
+            return;
+        } else if (user.length < 3){
+            alert('Tu nombre es demasiado corto...');
+            return;
+        } else if (!isNaN(first_letter)){
+            alert('Tu nombre no puede empezar por un número... no estás en La Guerra de las Galaxias');
+            return;
+        //Función para comprobrar las palabras prohibidas
+        }else if (checkWord(user) == false){
+            alert('Tu nombre no puede tener caracteres prohibidos');
+            return;
+        } 
+        START.style.display = 'none';
+        startGame();
+    }
+    //2º Para iniciar el juego
+    function startGame(){
+        //Damos valores a las variables
+        letters_found = 0;
+        fail_letters = 0;
+        total_letters= 0;
+        clean_word = 0;
+        tries = 6;
+        //Llamada a la función de actualizar marcador
+        changePanel();
+    }
+    //3º Hacemos la función para poner la frase oculta, pero primero hay que hacer unas cuantas comprobaciones para ver que cumple con los requisitos
+    //Primero tenemos que hacer las comprobaciones para cada una de las letras (hemos declaraddo la versión limpia con la función cleanVowel)
+    function checkCharacter(letter){
+        //partimos de que la letra es un caracter prohibido
+        let valid = false;
+        //Si no está en el listado de porhibidas el valor es -1
+        if (FORBIDDEN_LETTERS.indexOf(letter) == -1){
+            //cambiamos el valor booleano
+            valid = true;
+        }
+        //nos devuleve un booleano: o true o false;
+        return valid;
+    }
+    //Segundo vamos a recorrer la palabra para ver si sus letras son válidas, y lo usaremos en un if de la función para ocultar la frase
+    function checkWord(word){
+        //partimos de que la palabra es válida, pero vamos a pasar cada letra por la función anterior para comprobar su validez
+        let isWordValid = true;
+        for (let i = 0; i < word.length; i++) {
+            const letter = word[i];
+            let isLetterValid = checkCharacter(letter);
+            if (isLetterValid == false){
+                isWordValid = false;
+            }
+        }
+        return isWordValid;
+    }
+
+    
+    //Proporcionar la palabra oculta, comprueba is cumple las condiciones y si es así, obtienes 
+    function hiddenWord(){
+        IN_WORD = HIDDEN_WORD.value;
+        if (IN_WORD == ''){
+            showAlert('No puedes continuar sin poner una frase', 'aviso');
+            return;
+        } else if (IN_WORD.length < 10){
+            showAlert('Tu frase es muy corta...prueba a escribir algo más largo', 'aviso');
+            return;
+        } else if (checkWord(IN_WORD) == false){
+            showAlert('Tu frase no puede tener caracteres prohibidos', 'aviso');
+            return;
+        }
+        //Contar letras totales
+        total_letters = IN_WORD.length;
+        //Obtener versión limpia de la frase oculta
+        showCleanWord(IN_WORD);
+        //Montar casillero
+        spanLetters(IN_WORD);
+        //Llamada a actualizar marcador
+        changePanel();
+    }
+
+    //Función para obtener la versión limpia de la palabra
+    function showCleanWord(in_word){
+        let dirty_word = in_word;
+        clean_word = cleanWord(dirty_word);
+    }
+
+    //Función para importar el casillero
+    function spanLetters(in_word){
+        for (let i = 0; i < in_word.length; i++) {
+            const letter = in_word[i];
+            if (letter == ' '){
+                GUESS_WORD.innerHTML += `<span>.</span>`;
+                total_letters--;
+            } else {
+                GUESS_WORD.innerHTML += `<span>-</span>`;
+            }
+        }
+    }
+
+    //Función para comprobar la letra
+    function checkLetter(in_letter){
+        if (in_letter.length !== 1){
+            showAlert('Letra no válida', 'aviso');
+            return;
+        } else if (checkCharacter(in_letter) == false){
+            showAlert('Letra no válida', 'aviso');
+            return;
+        }
+        in_letter = cleanVowels(in_letter);
+        if (clean_word.indexOf(in_letter) !== -1){
+            showAlert('¡Letra encontrada! Ya te queda una menos', 'bien');
+            //funcion para poner la letra en el casillero
+            putLetter(in_letter);
+        } else {
+            showAlert('Letra fallada... ves con cuidado', 'aviso');
+            //funcion para ponerla en el panel de control
+            failLetter(in_letter);
+        }
+        //Actualizar marcador
+        changePanel();
+    }
+
+    //Función para susutitur las letras en el casillero
+    function putLetter(in_letter){
+        //creamos un bucle para recorrer la cadena en la palabra limpia
+        for (let i = 0; i < clean_word.length; i++) {
+            //nos dice la posición y las gaurdamos en una variable
+            const letter = clean_word[i];
+            //el if nos dice que la pongamos en la posisción correspondiente del spn y que aumente el marcador
+            if (letter == in_letter){
+                GUESS_WORD.children[i].textContent = IN_WORD[i];
+                letters_found++;
+            } 
+        } 
+    }
+    //Función para poner las letras falladas en el casillero las;
+    function failLetter(in_letter){
+        document.getElementById('char_fail').textContent += `${in_letter} - `;
+        fail_letters++;
+        tries--;
+    }
+
+    //Función para actualizar el marcador
+    function changePanel(){
+        
+        document.getElementById('char_found').textContent = letters_found;
+        document.getElementById('char_falladas').textContent = fail_letters;
+        document.getElementById('trial').textContent = tries;
+
+    }
+
+    //Función para comprobar le estado del juego
+    function checkState(){
+
+    } 
+
+    
+
+    //Función para limpiar las palabras de tildes
+    function cleanWord(dirty_word){
+        let clean_word = '';
+        for (let i = 0; i < dirty_word.length; i++) {
+            const word = dirty_word[i].toLowerCase();
+            clean_word += cleanVowels(word);
+        }
+        return clean_word;
+    }
+
+    //Función para limpiar las vocales
+    function cleanVowels(letter){
+        letter = letter.toLowerCase();
+        let clean_letter = '';
+        switch (letter) {
+                case 'á':
+                case 'à':
+                case 'ä':
+                case 'â':
+                    clean_letter = 'a';
+                    break;
+                case 'é':
+                case 'è':
+                case 'ë':
+                case 'ê':
+                    clean_letter = 'e';
+                    break;
+                case 'í':
+                case 'ì':
+                case 'ï':
+                case 'î':
+                    clean_letter = 'i';
+                    break;
+                case 'ó':
+                case 'ò':
+                case 'ö':
+                case 'ô':
+                    clean_letter = 'o';
+                    break;
+                case 'ú':
+                case 'ù':
+                case 'ü':
+                case 'û':
+                    clean_letter = 'u';
+                    break;
+
+                default:
+                    clean_letter = letter;
+                    break;
+            }
+            return clean_letter;
+        }
+
+        //Función para mostrar mensajes
+        function showAlert(message, clase){
+            document.getElementById('aviso').textContent = message;
+            document.getElementById('aviso').className = clase;
+        }
+    
+
+
+
+
+
+    //EVENTOS
+    document.getElementById('btn_inicio').onclick = nameUser;
+    document.getElementById('btn_ocultar').onclick = hiddenWord;
+    document.getElementById('btn_ck_char').onclick = function (){
+        checkLetter(IN_LETTER.value);
+    }
+    </script>
+    
+</body>
+</html>

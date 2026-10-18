@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego del número oculto</title>
+    <style>
+        body {
+            font-family: verdana;
+            color: darkslategray;
+        }
+        h1 {
+            font-size: 4rem;
+            text-align: center;
+        }
+        #intro {
+            text-align: center;
+            font-size: 2rem;
+            border: 6px solid darkslategray;
+            padding: 1rem;
+            border-radius: 1rem;
+            color: slategrey;
+            background-color: lightsteelblue;
+        }
+        #intro button, #btn_random {
+            font-size: 3rem;
+            font-weight: bold;
+            padding: .5rem;
+            background-color: lightslategrey;
+            border-radius: .5rem;
+            color: lightsteelblue;
+            border: 2px solid darkslategray;
+        }
+        #usuario {
+            height: 30px;
+            width: 250px;
+            margin: 0 2rem;
+            font-size: 2.2rem;
+            padding: 0.4rem;
+            color: slategray;
+            border: 2px solid;
+            border-radius: .3rem;
+            text-align: center;
+        }
+        .contenedor {
+            width: 960px;
+            margin: auto;
+        }
+        #letra {
+            width: 40px;
+            height: 30px;
+            font-size: 1.8rem;
+            text-align: center;
+            color: darkslategray;
+            font-weight: bold;
+            border-radius: .4rem;
+        }
+       #entrada button, #btn_random, #selector button {
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: .3rem;
+            border-radius: .3rem;
+            border: navajowhite;
+            background-color: lightslategray;
+            color: white;
+            position: relative;
+            top: -5px;
+        }
+  
+       #numero, #entrada {
+        	display: none;
+        	font-size: 1.5rem;
+        	border: 6px solid;
+        	margin: 4rem auto;
+        	width: 600px;
+        	border-radius: 1rem;
+        	padding: .5rem 1rem;
+        	text-align: center;
+        }
+
+        #mensajes {
+            display: none;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border: 3px solid;
+            border-radius: 1rem;
+            margin: 5rem;
+        }
+        #alertas {
+        	border: 6px solid;
+        	margin: 4rem auto;
+        	width: 600px;
+        	border-radius: 1rem;
+        	padding: .5rem 1rem;
+            text-align: center;
+            transition: all ease-in-out 1s;
+        }
+        .info{
+            color: darkblue;
+            background-color: lightblue;
+        }
+        .error{
+            color: darkred;
+            background-color: lightcoral;
+        }
+        .warning{
+            color: maroon;
+            background-color: darkorange;
+        }
+        .success{
+            color: darkgreen;
+            background-color: lightgreen;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Juego del número oculto</h1>
+    <div class="success" id="alertas">
+        <h4>Juego del número oculto</h4>
+        <p>Escribe tu nombre para empezar</p>
+    </div>
+    <div id="intro">
+        <label for="in_usuario">Nombre:</label>
+            <input id="in_usuario" type="text">
+            <button id="btn_inicio">¡Empieza!</button>
+    </div>
+    <div id="numero">
+        <p>Vamos a empezar sacando un número al azar entre el 0 y el 100</p>
+        <button id="btn_random">Elige un número al azar</button>
+    </div>
+    <div id="entrada">
+        <label for="in_num">Introduce un número para ver si es el número oculto</label>
+        <input type="text" id="in_num" maxlength="3" size="3">
+        <button id="btn_in_num">Comprobar</button>
+    </div>
+    <div id="mensajes">
+        <p>Números fallados: <span id="out_error"></span>. Intentos restantes: <span id="out_intentos"></span></p>
+    </div>
+    <dialog id="restart">
+        <p>¿Quieres volver a jugar?</p>
+        <button id="btn_play_again">Jugar de nuevo</button>
+        <button id="btn_end">Salir del juego</button>
+    </dialog>
+
+    <script>
+        //Constantes del DOM
+        //Inputs
+        const IN_USER = document.getElementById('in_usuario');
+        const IN_NUM = document.getElementById('in_num');
+        const RESTART = document.getElementById('restart');
+        //Botones
+        const BTN_START = document.getElementById('btn_inicio');
+        const BTN_HIDDEN = document.getElementById('btn_random');
+        const BTN_NUM = document.getElementById('btn_in_num');
+        const BTN_REPLAY = document.getElementById('btn_play_again');
+        const BTN_END = document.getElementById('btn_end');
+        //Outputs
+        const OUT_NUM = document.getElementById('out_error');
+        const OUT_TRIES = document.getElementById('out_intentos');
+        const OUT_ALERT = document.getElementById('alertas');
+        //Datos de la aplicación
+        let user, hidden_num, num, num_absolute, used_num, clean_txt, isGameOver, guesses, fail_num
+        const total_errors = 6;
+        const forbidden_chars = '!\".$%&/()=*\`^\'\\:;,ºª|@#¬¿¡?1234567890';
+
+        //Desarrollo del juego
+        //VALIDACIÓN DEL USUARIO
+        function userLog(){
+            user = IN_USER.value;
+            if (!user || user.length < 3){
+                showAlert('Error de usuario', 'El nombre necesita 3 o más caracteres', 'warning');
+                setFocus(IN_USER);
+                return;
+            }
+            if (isWordValid(user)){
+                startGame();
+            } else {
+                showAlert('Error de usuario', 'El nombre no puede tener caracteres especiales ni números', 'warning');
+                setFocus(IN_USER);
+            }
+        }
+        //FUNCIÓN PARA INICIAR EL JUEGO
+        function startGame(){
+            isGameOver = false;
+            fail_num = [];
+            guesses = 0;
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('numero').style.display = 'block';
+            showAlert('Bienvenid@ ' + user, 'Vamos a empezar con el juego', 'info');
+        }
+
+        //FUNCIÓN PARA GENERAR EL NÚMERO OCULTO
+        function getHiddenNumber(){
+            hidden_num = Math.ceil(Math.random() * 100);
+            console.log(hidden_num);
+            document.getElementById('entrada').style.display = 'block';
+            document.getElementById('mensajes').style.display = 'block';
+        }
+
+        //FUNCIÓN PARA ACTAULIZAR EL PANEL
+        function updatePAnel(){
+            OUT_NUM.textContent = fail_num;
+            OUT_TRIES.textContent = total_errors - guesses;
+        }
+        //FUNCIÓN PARA CHECKEAR EL NÚMERO
+        function checkNumber(){
+            if (isGameOver){
+                return;
+            }
+            num = parseInt(IN_NUM.value);
+            if (isNaN(num)|| num === '' || num < 0 || num > 100){
+                setFocus(IN_NUM);
+                showAlert('Error en el número introducido', 'No puedes dejar el cuadro en blanco ni introducir una letra o un número menor de 0 o mayor de 100', 'warning');
+            return;
+            }
+            if (isNumberUsed(num)){
+                return;
+            }
+            if (num === hidden_num){
+                setFinalState('winner');
+                //restart el game
+            } else if (num >= hidden_num + 15){
+                showAlert('Has fallado ', `Estás muy lejos ${user}`, 'warning');
+            } else if (num >= hidden_num + 5){
+                showAlert('Te estás acercando', 'Aún puedes adivinarlo' , 'warning');
+            } else if (num > hidden_num){
+                showAlert('Caliente, caliente', 'Ya casi lo tienes' + user, 'success');
+            } else if (num <= hidden_num - 15){
+                showAlert('Has fallado ', `Estás muy lejos ${user}`, 'warning');
+            } else if (num <= hidden_num - 5){
+                showAlert('Te estás acercando', 'Aún puedes adivinarlo' , 'warning');
+            } else if (num < hidden_num){
+                showAlert('Caliente, caliente', 'Ya casi lo tienes' + user, 'success');
+            }
+            fail_num.push(num);
+            guesses++;
+            setFocus(IN_NUM);
+            updatePAnel();
+            stateOfGame();
+        }
+        //FUNCIÓN PARA VER SI EL NUMERO ESTÁ USADO
+        function isNumberUsed(num){
+            if (fail_num.indexOf(num) != -1){
+                showAlert('Cuidado', `Ya has usado el número ${num}`, 'warning');
+                return true;
+            }
+            return false;
+        }
+        //FUNCIÓN PARAS VER EL ESTADO DEL JUEGO
+        function stateOfGame(){
+            if (guesses === (total_errors -1)){
+                setTimeout( function (){
+                showAlert('Atención', 'Sólo te queda un intento para encontrar el número ocult', 'warning');
+            }, 1000);
+        }
+        if (guesses === total_errors){
+            setFinalState('Looser');
+        }
+        }
+        //FUNCIÓN PARA ESTADO DEL JUEGO
+        function setFinalState(estado){
+            isGameOver = true;
+        if(estado === 'winner'){
+            showAlert('Enhorabuena '+ user, '¡¡Has adivinado el número oculto!!', 'succes');
+        } else {
+            showAlert(`¡Lo sentimos, ${user}!`, `Has perdido el juego. El número oculto era ${hidden_num}`, 'error');
+        }
+         setTimeout(showStartAgain, 1000);
+        }
+        //FUNCIÓN PARA PREGUNTA POP UP
+        function showStartAgain(){
+          RESTART.showModal();
+        }
+        //FUNCIÓN PARA EL EMEPZAR DE NUEVO
+        function restartGame(){
+            RESTART.close();
+            startGame();
+            updatePAnel();
+        }
+        //FUNCIÖN PARA SALIR DEL JUEGO
+        function endGame(){
+            window.close();
+        }
+        
+        
+
+        //FUNCIONES AUXILIARES
+        function isCharValid(char){
+            let isCharValid = false;
+            if (forbidden_chars.indexOf(char) === -1){
+                isCharValid = true;
+            }
+            return isCharValid;
+        }
+        function isWordValid(word){
+            let isWordValid = true;
+            for (let i = 0; i < word.length; i++) {
+                console.log(word);
+                if (!isCharValid(word[i])){
+                    isWordValid = false;
+                }
+            }
+            return isWordValid;
+        }
+         function cleanVowel(vowel){
+        vowel = vowel.toLowerCase();
+        let clean_vowel = '';
+        switch (vowel) {
+                case 'á':
+                case 'à':
+                case 'ä':
+                case 'â':
+                    clean_vowel = 'a';
+                    break;
+                case 'é':
+                case 'è':
+                case 'ë':
+                case 'ê':
+                    clean_vowel = 'e';
+                    break;
+                case 'í':
+                case 'ì':
+                case 'ï':
+                case 'î':
+                    clean_vowel = 'i';
+                    break;
+                case 'ó':
+                case 'ò':
+                case 'ö':
+                case 'ô':
+                    clean_vowel = 'o';
+                    break;
+                case 'ú':
+                case 'ù':
+                case 'ü':
+                case 'û':
+                    clean_vowel = 'u';
+                    break;
+
+                default:
+                    clean_vowel = vowel;
+                    break;
+            }
+            return clean_vowel;
+        }
+
+        function setFocus(element){
+            element.value = '';
+            element.focus();
+        }
+
+        function showAlert(title, message, format) {
+            OUT_ALERT.style.display = 'block';
+            OUT_ALERT.querySelector('h4').textContent = title;
+            OUT_ALERT.querySelector('p').textContent = message;
+            OUT_ALERT.className = format;
+        }
+
+        //EVENTOS
+        BTN_START.onclick = userLog;
+        BTN_HIDDEN.onclick = getHiddenNumber;
+        BTN_NUM.onclick = checkNumber;
+        BTN_REPLAY.onclick = restartGame;
+        BTN_END.onclick = endGame;
+
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,26 @@
+DATOS INICIALES
+
+Creamos una variable para identificar el elemento visible en cada momento;
+
+Almacenamos todos los h3 con clase pregunta en una variable
+
+Hacemos lo mismo con los bloques de respuesta
+
+bucle para recorrer todas las respuestas y almacenar la altura de cada una de ellas en la pregunta correspondiente
+    leemos la altura de cada respuesta;
+    guardamos la altura en cada pregunta
+    después de leer la altura de cada respuesta, ponemos a cero cada una para empezar la aplicación
+
+FUNCIÓN para mostrar el párrafo correspondiente al h3 seleccionado, que recibe por parámetro
+    identificamos el bloque que contiene la respuesta a mostrar (el div hermano al h3 sobre el que pinchamos)
+    si el elemento seleccionado es el visible lo ocultamos y definimos que no hay visible
+    en caso contrario:
+        ocultamos el bloque visible, si lo hay
+        leemos la altura que aplicaremos a la respuesta asociada a esta pregunta
+        asignamos la altura a la respuesta
+        indicamos que a partir de ahora el elemento visible es el nodo que acabamos de mostrar
+        
+FUNCIÓN para ocultar el elemento visible, que recibe por parámetro
+    si el elemento está visible (está definido) lo ocultamos definiendo su altura a cero
+
+asignación dinámica de función para mostrar el bloque de texto a cada pregunta
