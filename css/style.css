@@ -223,6 +223,31 @@ thead th{
 	transform: scale(1.2);
 }
 
+/* Sección de contacto */
+.fila_1 {
+	padding: 1rem;
+	border: 2px solid var(--color-1);
+	border-radius: .5rem;
+	display: flex;
+	flex-direction: column;
+}
+.fila {
+	width: 100%;
+	margin: .5rem;
+}
+.fila_2 {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	justify-content: center;
+	padding: 1rem;
+	background-color: var(--color-4);
+	border: 1px solid var(--color-4);
+	border-radius: .5rem;
+}
+#comentario{
+	width: 150px;
+}
 
 @media (min-width: 550px){
 	/* Sección de cabecera */
