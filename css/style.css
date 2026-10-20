@@ -354,12 +354,12 @@ form {
 
 	/* Página de carrera investigadora */
 	#laboral{
-		grid-column: 1 / span 6;
+		grid-column: 1 / span 5;
 	}
 	#tecnicas {
-	grid-column: 7 / span 12;
-	align-content: last baseline;
-}
+		grid-column: 6 / span 12;
+		align-content: last baseline;
+	}
 	/* Página de formación académica */
 	#academicas{
 		grid-column: 1 / span 4;
@@ -388,7 +388,7 @@ form {
 	#html, #css, #javascript{
 		width: 29%;
 	}
-.bloque-info.formulario {
-	grid-column: 2 /span 10;
-}
+	.bloque-info.formulario {
+		grid-column: 2 /span 10;
+	}
 }
