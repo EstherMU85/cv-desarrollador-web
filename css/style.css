@@ -39,6 +39,12 @@ a {
 	display: block;
 	transition: all 1s ease;
 }
+.link-menu {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
 a:hover{
 	color: var(--color-5);
 }
@@ -322,10 +328,12 @@ thead th{
 		width: 1000px;
 		margin: auto;
 	}
-	main{
-		display: grid;
-		grid-template-columns: repeat(12, 1fr);
-	}
+main {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	max-width: 1100px;
+	margin: auto;
+}
 	/* Página de inicio */
 	.intro{
 		grid-column: 2 / span 10;
