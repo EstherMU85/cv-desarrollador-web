@@ -74,6 +74,7 @@ section {
   	gap: 30px;
 	position: relative;
   	top: 117px;
+	justify-content: center;
 }
 
 /* Estilo para las tablas */
