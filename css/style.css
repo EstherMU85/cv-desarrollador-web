@@ -382,6 +382,9 @@ form {
 		display: flex;
 		align-content: last baseline;
 	}
+	#marco-ejercicios{
+		grid-column: 2 / span 10;
+	}
 	.lenguajes .title-section{
 		width: 100%;
 	}
