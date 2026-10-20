@@ -388,12 +388,13 @@ iframe {
 		grid-column: 1 / span 12;
 	}
 	#lenguaje{
-		grid-column: 1 / span 2;
+		grid-column: 1 / span 3;
 		display: flex;
 		align-content: last baseline;
 	}
-	#marco-ejercicios{
-		grid-column: 3 / span 12;
+	#marco-ejercicios {
+		grid-column: 4 / span 12;
+		margin-top: 3.3rem;
 	}
 	.lenguajes .title-section{
 		width: 100%;
