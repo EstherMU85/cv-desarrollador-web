@@ -325,10 +325,10 @@ form {
 		justify-content: space-evenly;
 	}
 	.lenguajes > .title-section {
-	width: 100%;
+		width: 100%;
 	}
 	.lenguajes .art-section, .habilidades .art-section{
-		width: 45%;
+		width: 30%;
 	}
 	form {
 		max-width: 750px;
@@ -365,10 +365,11 @@ form {
 		grid-column: 1 / span 4;
 	}
 	#idiomas {
-		grid-column: 5 /span 4;
+		grid-column: 1 /span 4;
 	}
 	#otros_cursos {
-		grid-column: 9/span 12;
+		grid-column: 5 /span 12;
+		grid-row: 1 / span 2;
 	}
 	.title-section{
 		font-size: 1.5rem;
@@ -389,7 +390,7 @@ form {
 		width: 100%;
 	}
 	#html, #css, #javascript{
-		width: 29%;
+		width: 100%;
 	}
 	.bloque-info.formulario {
 		grid-column: 2 /span 10;
