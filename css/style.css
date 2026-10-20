@@ -354,7 +354,7 @@ iframe {
 	}
 	/* Página de inicio */
 	.intro{
-		grid-column: 2 / span 10;
+		grid-column: 1 / span 12;
 	}
 
 	/* Página de carrera investigadora */
