@@ -375,15 +375,15 @@ form {
 	}
 	/* Página de diseño web */
 	#disenyo{
-		grid-column: 1 / span 4;
+		grid-column: 1 / span 12;
 	}
 	#lenguaje{
-		grid-column: 5 / span 12;
+		grid-column: 1 / span 4;
 		display: flex;
 		align-content: last baseline;
 	}
 	#marco-ejercicios{
-		grid-column: 2 / span 10;
+		grid-column: 5 / span 12;
 	}
 	.lenguajes .title-section{
 		width: 100%;
