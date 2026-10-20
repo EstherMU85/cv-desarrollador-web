@@ -260,6 +260,11 @@ form {
 	width: 100%;
 	height: 150px;
 }
+iframe {
+	margin-top: 1.5rem;
+	background-color: var(--color-1);
+	border-radius: .5rem;
+}
 /* Puntos de corte */
 @media (min-width: 550px){
 	/* Sección de cabecera */
@@ -366,6 +371,7 @@ form {
 	}
 	#idiomas {
 		grid-column: 1 /span 4;
+		margin-block: 0 0;
 	}
 	#otros_cursos {
 		grid-column: 5 /span 12;
@@ -375,16 +381,19 @@ form {
 		font-size: 1.5rem;
 	}
 	/* Página de diseño web */
+	#ejemplos-web {
+		max-width: 1400px;
+	}
 	#disenyo{
 		grid-column: 1 / span 12;
 	}
 	#lenguaje{
-		grid-column: 1 / span 4;
+		grid-column: 1 / span 2;
 		display: flex;
 		align-content: last baseline;
 	}
 	#marco-ejercicios{
-		grid-column: 5 / span 12;
+		grid-column: 3 / span 12;
 	}
 	.lenguajes .title-section{
 		width: 100%;
@@ -395,4 +404,5 @@ form {
 	.bloque-info.formulario {
 		grid-column: 2 /span 10;
 	}
+
 }
